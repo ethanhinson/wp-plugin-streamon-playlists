@@ -44,6 +44,7 @@ class StreamOnSettings {
   }
   
  public function add_menu() {
+    global $stream_on;
     // Add a page to manage this plugin's settings
     add_options_page(
 	'StreamOn', 
@@ -52,10 +53,16 @@ class StreamOnSettings {
 	$this->section, 
 	array(&$this, 'settings_page')
     );
+    // Utils for updating/deleting
+    if(isset($_GET['delete_all'])) {
+      $stream_on->delete_all();
+    }
+    if(isset($_GET['update'])) {
+      $stream_on->update();
+    }
   }  
   
   public function settings_page() {
-    // Global vars
     ?><div class="wrap">
 	<div id="icon-options-general" class="icon32"><br></div>
 	<h2>StreamOn API Settings</h2>
@@ -69,6 +76,27 @@ class StreamOnSettings {
 	    <?php @submit_button(); ?>
 
 	</form>
+	<h2>StreamOn API WordPress Utils</h2>
+	<table class="form-table">
+	  <tbody>
+	    <tr>
+	      <td>
+		Refresh StreamOn Playlists
+	      </td>
+	      <td>
+		<a class="button button-secondary" href="options-general.php?page=streamon_auth&update=1">Refresh API Data</a>
+	      </td>
+	    </tr>	    
+	    <tr>
+	      <td>
+		Delete all StreamOn Playlists
+	      </td>
+	      <td>
+		<a class="button button-secondary" href="options-general.php?page=streamon_auth&delete_all=1">Delete API Data</a><br /><small style="color:#f30000">Caution: This action cannot be undone</small>
+	      </td>
+	    </tr>
+	  </tbody>
+	</table>
     </div><?php
   }
 

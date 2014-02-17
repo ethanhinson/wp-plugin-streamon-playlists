@@ -92,9 +92,9 @@ class StreamOn {
       return;
     } 
     $url = 'http://'. $user .':' . $pass . '@' . $endpoint . '/api/v1/playlist/?format=json&permanent=true';
-    $response = wp_remote_get($url);
+    // Let processing run for one minute.
+    $response = wp_remote_get($url, array('timeout' => 60000));
     $local_items = $this->local_items();
-
     if (!is_wp_error($response) && isset($response['response']['code']) && 200 === $response['response']['code']) {
       $body = wp_remote_retrieve_body($response);
       $result = json_decode($body);
@@ -106,13 +106,12 @@ class StreamOn {
 	    'post_status' => 'publish',
 	    'tax_input' => array('playlist_categories' => $item->categories), // This needs work for sure for sure.
 	);
-
 	if (array_key_exists($item->id, $local_items)) {
-	  $post['post_id'] = $local[$item->id]['pid'];
+	  $post['ID'] = $local_items[$item->id]['pid'];
 	  $last_updated = $item->timestamp_updated;
 	}
 
-	if (!isset($post['post_id']) || $last_updated > $local[$item->id]['updated']) {
+	if (!isset($post['ID']) || $last_updated > $local[$item->id]['updated']) {
 	  $pid = wp_insert_post($post);
 	  if ($pid) {
 	    update_post_meta($pid, 'streamon_id', $item->id);
