@@ -34,9 +34,9 @@ class StreamOn {
     // Load plugin text domain
     add_action('init', array($this, 'plugin_textdomain'));
     //Register post types
-    add_action('init', array($this, 'register_post_types'));
+    add_action('init', array($this, 'register_post_types'), 100);
     //Register taxonomies
-    add_action('init', array($this, 'register_taxonomies'));
+    add_action('init', array($this, 'register_taxonomies'), 100);
     // Add settings
     require_once('includes/settings.php');
     // Add CRON
