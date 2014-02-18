@@ -3,6 +3,7 @@
 
 class StreamOnSettings {
   public $section = 'streamon_auth';
+  public $page_path = 'options-general.php?page=streamon_auth';
     
   public function __construct() {      
     add_action('admin_init', array(&$this, 'admin_init'));
@@ -41,7 +42,7 @@ class StreamOnSettings {
       array(&$this, 'field_streamon_url'), 
       $this->section, 'streamon_auth'
     );
-  }
+ }
   
  public function add_menu() {
     global $stream_on;
@@ -80,19 +81,21 @@ class StreamOnSettings {
 	<table class="form-table">
 	  <tbody>
 	    <tr>
-	      <td>
+	      <th scope="row">
 		Refresh StreamOn Playlists
-	      </td>
+	      </th>
 	      <td>
-		<a class="button button-secondary" href="options-general.php?page=streamon_auth&update=1">Refresh API Data</a>
+		<a class="button button-secondary" href="<?php print $this->page_path; ?>&update=1">Refresh API Data</a>
 	      </td>
 	    </tr>	    
 	    <tr>
-	      <td>
+	      <th scope="row">
 		Delete all StreamOn Playlists
-	      </td>
+	      </th>
 	      <td>
-		<a class="button button-secondary" href="options-general.php?page=streamon_auth&delete_all=1">Delete API Data</a><br /><small style="color:#f30000">Caution: This action cannot be undone</small>
+		<a class="button button-secondary" href="<?php print $this->page_path; ?>&delete_all=1">Delete API Data</a>
+		<br />
+		<small style="color:#f30000">Caution: This action cannot be undone</small>
 	      </td>
 	    </tr>
 	  </tbody>
@@ -116,7 +119,5 @@ class StreamOnSettings {
   }
   
 }
-
 $streamon_settings = new StreamOnSettings();
-
 ?>
